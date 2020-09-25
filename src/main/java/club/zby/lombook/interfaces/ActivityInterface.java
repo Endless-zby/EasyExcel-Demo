@@ -3,6 +3,7 @@ package club.zby.lombook.interfaces;
 import club.zby.lombook.lotteryserver.main;
 import org.apache.poi.ss.formula.functions.T;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
 
 /**
@@ -18,26 +19,23 @@ public class ActivityInterface {
     }
 
     public static String getActivity() throws NoSuchMethodException {
-        Method dealLotteryExcel = getMethod();
-        boolean annotationPresent = dealLotteryExcel.isAnnotationPresent(Activity.class);
-        if(annotationPresent){
-            Activity annotation = dealLotteryExcel.getAnnotation(Activity.class);
-            return annotation.id();
-        }
-        return "";
+        Activity method = getMethod();
+        assert method != null;
+        return method.id();
     }
 
     public static String getDataBase() throws NoSuchMethodException {
-        Method dealLotteryExcel = getMethod();
+        Activity method = getMethod();
+        assert method != null;
+        return "use " + method.dataBase() + ";\n";
+    }
+    public static Activity getMethod() throws NoSuchMethodException {
+        Method dealLotteryExcel = main.class.getDeclaredMethod("main", String[].class);
         boolean annotationPresent = dealLotteryExcel.isAnnotationPresent(Activity.class);
         if(annotationPresent){
-            Activity annotation = dealLotteryExcel.getAnnotation(Activity.class);
-            return "use " + annotation.dataBase() + ";\n";
+            return dealLotteryExcel.getAnnotation(Activity.class);
         }
-        return "use \n";
-    }
-    public static Method getMethod() throws NoSuchMethodException {
-        return main.class.getDeclaredMethod("main", String[].class);
+        return null;
     }
 
 }
