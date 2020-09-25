@@ -56,4 +56,5 @@ public class main {
         read.doReadAll();
         System.out.println(students.size());
     }
+
 }

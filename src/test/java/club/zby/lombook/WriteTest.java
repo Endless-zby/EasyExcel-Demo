@@ -5,7 +5,7 @@ import club.zby.lombook.entity.Car;
 import club.zby.lombook.service.DataTemplate;
 import club.zby.lombook.service.serviceImpl.DataTemplateImpl;
 import com.alibaba.excel.EasyExcel;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**

@@ -1,6 +1,7 @@
 package club.zby.lombook.service;
 
 import club.zby.lombook.entity.Car;
+import club.zby.lombook.entity.Lottery;
 import club.zby.lombook.entity.Student;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface DataTemplate {
     List<Student> createStudent();
 
     List<Car> createCar();
+
+
 
 
 }
