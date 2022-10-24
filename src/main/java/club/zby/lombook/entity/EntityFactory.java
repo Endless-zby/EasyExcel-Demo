@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,10 @@ public class EntityFactory {
     private static String filePathName;
 
     private static String className;
+
+    private static String packagePath = "package club.zby.lombook.tmp;\n";
+
+    private static StringBuffer importPath = new StringBuffer("This is import.");
 
     private static String suffix = ".java";
 
@@ -33,24 +38,20 @@ public class EntityFactory {
     }
 
     public String createFunIn() throws IOException {
-        List<InterfaceDocEntity> interfaceDocEntities = outDoc.getInterfaceDocEntities();
-        if(CollectionUtils.isEmpty(interfaceDocEntities)){
-            return null;
-        }
-        String content = createParameter(outDoc, InterfaceDocEntity.IN_PUT);
-        if(!StringUtils.isEmpty(filePathName)){
-            createFile(filePathName + className + suffix, content);
-        }
-        return content;
+        return createFun(InterfaceDocEntity.IN_PUT);
     }
 
     public String createFunOut() throws IOException {
+       return createFun(InterfaceDocEntity.OUT_PUT);
+    }
+
+    public String createFun(String inOutPut) throws IOException {
         List<InterfaceDocEntity> interfaceDocEntities = outDoc.getInterfaceDocEntities();
         if(CollectionUtils.isEmpty(interfaceDocEntities)){
             return null;
         }
 
-        String content = createParameter(outDoc, InterfaceDocEntity.OUT_PUT);
+        String content = createParameter(outDoc, inOutPut);
         if(!StringUtils.isEmpty(filePathName)){
             createFile(filePathName + className + suffix, content);
         }
@@ -75,9 +76,10 @@ public class EntityFactory {
         List<InterfaceDocEntity> interfaceDocEntitys = outDoc.getInterfaceDocEntities().stream().filter(doc -> inOutPut.equals(doc.getIo())).collect(Collectors.toList());
 
         StringBuilder content = new StringBuilder();
+        content.append(packagePath);
+        content.append(importPath);
         content.append(String.format(InterfaceDocEntity.AUTHOR,outDoc.getFunName(),"开发者姓名"));
-        content.append(InterfaceDocEntity.GETTER_ANNOTATION);
-        content.append(InterfaceDocEntity.SETTER_ANNOTATION);
+        content.append(InterfaceDocEntity.DATA_ANNOTATION);
 
         StringBuilder parameters = new StringBuilder();
 
@@ -86,15 +88,23 @@ public class EntityFactory {
             parameters.append(parameter);
         }
         String common = inOutPut.equals(InterfaceDocEntity.IN_PUT) ? InterfaceDocEntity.COMMON_IN : InterfaceDocEntity.COMMON_OUT;
-        className = inOutPut.equals(InterfaceDocEntity.IN_PUT) ? InterfaceDocEntity.IN_PUT_CLASS_NAME : InterfaceDocEntity.OUT_PUT_CLASS_NAME;
+        className = String.format(inOutPut.equals(InterfaceDocEntity.IN_PUT) ? InterfaceDocEntity.IN_PUT_CLASS_NAME : InterfaceDocEntity.OUT_PUT_CLASS_NAME,outDoc.getFunId());
 
-
-
-        content.append(String.format(InterfaceDocEntity.CODE_CONTENT,String.format(className,outDoc.getFunId()),common, "1L", parameters));
-
-        return content.toString();
+        content.append(String.format(InterfaceDocEntity.CODE_CONTENT,className,common, "1L", parameters));
+        String importString = addImport(content.toString());
+        return content.toString().replace(importPath, importString);
     }
 
+    public String addImport(String content){
+        // 查询字典
+        String importString = "\n";
+        for (ImportEnum importEnum : ImportEnum.values()) {
+            if(content.contains(importEnum.getKey())){
+                importString = importString + importEnum.getValue();
+            }
+        }
+        return importString;
+    }
 
    public static void createFile(String filePathName, String content) throws IOException {
         Path path = Paths.get(filePathName);

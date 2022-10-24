@@ -26,13 +26,11 @@ public class InterfaceDocEntity {
 
     public static final String PRIVATE = "private";
 
-    public static final String IN_PUT_CLASS_NAME = "fun%sRequestIn";
+    public static final String IN_PUT_CLASS_NAME = "Fun%sRequestIn";
 
-    public static final String OUT_PUT_CLASS_NAME = "fun%sResponseOut";
+    public static final String OUT_PUT_CLASS_NAME = "Fun%sResponseOut";
 
-    public static final String GETTER_ANNOTATION = "@Getter\n";
-
-    public static final String SETTER_ANNOTATION = "@Setter\n";
+    public static final String DATA_ANNOTATION = "@Data\n";
 
     public static final String COMMON_IN = "CommonIn";
 
