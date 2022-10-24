@@ -13,6 +13,44 @@ import lombok.NoArgsConstructor;
 @Builder
 public class InterfaceDocEntity {
 
+    public static final String IN_PUT = "I";
+    public static final String OUT_PUT = "O";
+    public static final String ANNOTATION =
+            "    /**\n" +
+            "     * %s\n" +
+            "     */";
+
+    public static final String PARAMETER_MODEL = "    %s %s %s;";
+
+    public static final String ENTER = "\n";
+
+    public static final String PRIVATE = "private";
+
+    public static final String IN_PUT_CLASS_NAME = "fun%sRequestIn";
+
+    public static final String OUT_PUT_CLASS_NAME = "fun%sResponseOut";
+
+    public static final String GETTER_ANNOTATION = "@Getter\n";
+
+    public static final String SETTER_ANNOTATION = "@Setter\n";
+
+    public static final String COMMON_IN = "CommonIn";
+
+    public static final String COMMON_OUT = "CommonOut";
+
+    public static final String CODE_CONTENT = "public class %s extends %s {\n" +
+            "    private static final long serialVersionUID = %s;\n" +
+            "\n" +
+            "%s\n" +
+            "}";
+
+    public static final String AUTHOR = "/**\n" +
+            " * %s\n" +
+            " *\n" +
+            " * @author %s\n" +
+            " */\n";
+
+
     @ExcelProperty(value = "功能编号")
     private String funId;
 
@@ -38,10 +76,12 @@ public class InterfaceDocEntity {
     private String isList;
 
     @ExcelProperty(value = "是否为空")
-    private String isNull;
+    private String isNull = "N";
 
     @ExcelProperty(value = "验证模式")
     private String authenticationMode;
+
+
 
 
 }

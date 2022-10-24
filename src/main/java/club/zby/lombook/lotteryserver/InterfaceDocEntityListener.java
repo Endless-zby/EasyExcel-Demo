@@ -5,6 +5,8 @@ import club.zby.lombook.entity.Lottery;
 import club.zby.lombook.entity.OutDoc;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import com.google.common.collect.Lists;
 import org.springframework.util.StringUtils;
 
@@ -34,6 +36,10 @@ public class InterfaceDocEntityListener extends AnalysisEventListener<InterfaceD
         }
 
         if(StringUtils.isEmpty(interfaceDocEntity.getFunId())){
+            if(!StringUtils.isEmpty(interfaceDocEntity.getParameter())){
+                String to = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, interfaceDocEntity.getParameter());
+                interfaceDocEntity.setParameter(to);
+            }
             funInterfaceDocList.add(interfaceDocEntity);
             return;
         }
@@ -41,6 +47,8 @@ public class InterfaceDocEntityListener extends AnalysisEventListener<InterfaceD
         if (isNumeric(interfaceDocEntity.getFunId())) {
             funId = interfaceDocEntity.getFunId();
             funName = interfaceDocEntity.getFunName();
+            String to = CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, interfaceDocEntity.getParameter());
+            interfaceDocEntity.setParameter(to);
             funInterfaceDocList.add(interfaceDocEntity);
         }
         if ("功能编号".equals(interfaceDocEntity.getFunId())) {
